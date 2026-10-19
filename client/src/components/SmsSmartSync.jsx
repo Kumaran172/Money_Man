@@ -14,7 +14,7 @@ export default function SmsSmartSync({ onTransactionAdded }) {
   const [copiedUrl, setCopiedUrl] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const webhookUrl = `http://192.168.1.8:5000/api/sms/webhook`;
+  const webhookUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/api/sms/webhook`;
 
   const sampleMessages = [
     { label: 'KVB Debit ₹350 Swiggy', text: 'Your a/c XXXXXXXXXXXX1516 is debited for Rs.350.00 on 18-Oct-26 by UPI to SWIGGY. Avl Bal Rs.24,630.00 - KVB' },
