@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables (Secrets)
+.env
+server/.env
+*.env.local
+
+# Production Build Artifacts
+dist/
+client/dist/
+
+# SQLite Database (Production uses MongoDB Atlas)
+*.db
+*.db-wal
+*.db-shm
+money_man.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

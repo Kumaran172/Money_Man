@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="50%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.2" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- Background Squircle -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#bgGrad)" filter="url(#shadow)" />
+  <rect x="36" y="36" width="440" height="440" rx="108" fill="none" stroke="url(#glowGrad)" stroke-width="4" opacity="0.6" />
+
+  <!-- Inner Ambient Glow -->
+  <circle cx="160" cy="140" r="120" fill="#ffffff" opacity="0.15" />
+
+  <!-- Bold "M" Monogram with Currency Accent -->
+  <path d="M 140 370 L 140 160 L 220 280 L 256 325 L 292 280 L 372 160 L 372 370" 
+        fill="none" 
+        stroke="#ffffff" 
+        stroke-width="48" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" />
+
+  <!-- Modern Tech Sparkle Accent -->
+  <path d="M 370 120 L 380 145 L 405 155 L 380 165 L 370 190 L 360 165 L 335 155 L 360 145 Z" fill="#fef08a" opacity="0.9" />
+</svg>

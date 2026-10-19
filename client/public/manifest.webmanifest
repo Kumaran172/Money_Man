@@ -1,0 +1,20 @@
+{
+  "name": "Money Man - Smart Finance",
+  "short_name": "Money Man",
+  "description": "Smart Mobile Personal Finance, Expense Tracker & Bank SMS Sync",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070b14",
+  "theme_color": "#070b14",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
