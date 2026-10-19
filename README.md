@@ -11,7 +11,7 @@
 
 ## 🚀 Live Demo & Deployment
 
-- **Live Web App**: [https://money-man.vercel.app](https://money-man.vercel.app) *(Replace with your deployed Vercel URL)*
+- **Live Web App**: [https://moneyman-liard.vercel.app/](https://moneyman-liard.vercel.app/)
 - **Cloud Database**: Hosted on **MongoDB Atlas** (`Cluster0` / `money_man`)
 
 ---
