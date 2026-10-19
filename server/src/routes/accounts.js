@@ -121,4 +121,19 @@ router.patch('/:id', async (req, res, next) => {
   }
 });
 
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const account = await Account.findOneAndDelete({
+      _id: req.params.id,
+      user_id: new mongoose.Types.ObjectId(userId)
+    });
+    if (!account) return res.status(404).json({ success: false, error: 'Account not found.' });
+
+    res.json({ success: true, message: `Account "${account.name}" removed successfully.` });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

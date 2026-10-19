@@ -201,7 +201,7 @@ export default function App() {
           {activeTab === 'home' && (
             <>
               <BalanceCard summary={summary} loading={loading} />
-              <AccountRail accounts={accounts} selectedAccount={selectedAccount} onSelect={setSelectedAccount} />
+              <AccountRail accounts={accounts} selectedAccount={selectedAccount} onSelect={setSelectedAccount} onAccountCreated={loadData} />
               <QuickActions
                 onCredit={() => { setModalType('credit'); setIsModalOpen(true); }}
                 onDebit={() => { setModalType('debit'); setIsModalOpen(true); }}

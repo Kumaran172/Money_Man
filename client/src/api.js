@@ -86,6 +86,18 @@ export async function fetchAccounts() {
   return apiFetch(`${API_BASE}/accounts`);
 }
 
+export async function createAccount(data) {
+  return apiFetch(`${API_BASE}/accounts`, { method: 'POST', body: JSON.stringify(data) });
+}
+
+export async function updateAccount(id, data) {
+  return apiFetch(`${API_BASE}/accounts/${id}`, { method: 'PATCH', body: JSON.stringify(data) });
+}
+
+export async function deleteAccount(id) {
+  return apiFetch(`${API_BASE}/accounts/${id}`, { method: 'DELETE' });
+}
+
 export async function fetchProfiles() {
   return apiFetch(`${API_BASE}/profiles`);
 }

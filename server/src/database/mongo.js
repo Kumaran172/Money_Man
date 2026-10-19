@@ -61,10 +61,9 @@ export async function seedDefaultCategories() {
 
 export async function createDefaultAccountsForUser(userId) {
   const defaults = [
-    { name: 'KVB A/c ...1516',    type: 'bank',       balance: 0, color: '#047857', icon: 'Landmark',   user_id: userId },
-    { name: 'Google Pay (UPI)',    type: 'gpay',       balance: 0, color: '#4285F4', icon: 'Smartphone', user_id: userId },
-    { name: 'Supermoney UPI',      type: 'supermoney', balance: 0, color: '#8B5CF6', icon: 'Zap',        user_id: userId },
-    { name: 'Cash Wallet',         type: 'cash',       balance: 0, color: '#F59E0B', icon: 'Banknote',   user_id: userId },
+    { name: 'Primary Bank A/c',    type: 'bank', balance: 0, color: '#004c8f', icon: 'Landmark',   user_id: userId },
+    { name: 'Google Pay (UPI)',    type: 'gpay', balance: 0, color: '#4285F4', icon: 'Smartphone', user_id: userId },
+    { name: 'Cash Wallet',         type: 'cash', balance: 0, color: '#F59E0B', icon: 'Banknote',   user_id: userId },
   ];
 
   await Account.insertMany(defaults);

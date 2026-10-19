@@ -76,6 +76,23 @@ router.post('/webhook', async (req, res, next) => {
     if (!account && bank_name && !/bank account/i.test(bank_name)) {
       account = await Account.findOne({ user_id: user._id, name: { $regex: bank_name.split(' ')[0], $options: 'i' } });
     }
+    // Check if user has an untouched placeholder "Primary Bank A/c"
+    if (!account) {
+      const placeholder = await Account.findOne({
+        user_id: user._id,
+        name: { $regex: '^(primary bank|bank account)', $options: 'i' }
+      });
+      if (placeholder) {
+        const txCount = await Transaction.countDocuments({ account_id: placeholder._id });
+        if (txCount === 0) {
+          placeholder.name = account_name;
+          placeholder.color = bank_color || '#004c8f';
+          await placeholder.save();
+          account = placeholder;
+          console.log(`✨ Renamed placeholder account to ${account_name} for ${user.name}`);
+        }
+      }
+    }
     if (!account) {
       // Auto-create payment account for this bank & last 4 digits
       account = await Account.create({
@@ -160,6 +177,22 @@ router.post('/bulk', async (req, res, next) => {
       }
       if (!account && bank_name && !/bank account/i.test(bank_name)) {
         account = await Account.findOne({ user_id: user._id, name: { $regex: bank_name.split(' ')[0], $options: 'i' } });
+      }
+      if (!account) {
+        const placeholder = await Account.findOne({
+          user_id: user._id,
+          name: { $regex: '^(primary bank|bank account)', $options: 'i' }
+        });
+        if (placeholder) {
+          const txCount = await Transaction.countDocuments({ account_id: placeholder._id });
+          if (txCount === 0) {
+            placeholder.name = account_name;
+            placeholder.color = bank_color || '#004c8f';
+            await placeholder.save();
+            account = placeholder;
+            console.log(`✨ Renamed placeholder account to ${account_name} during bulk import`);
+          }
+        }
       }
       if (!account) {
         account = await Account.create({

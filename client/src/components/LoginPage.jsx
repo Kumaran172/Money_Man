@@ -201,14 +201,14 @@ export default function LoginPage({ onAuthSuccess }) {
             <div style={{ marginTop: '16px', background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.25)', borderRadius: '12px', padding: '10px 12px', display: 'flex', gap: '8px' }}>
               <Sparkles size={16} color="#a78bfa" style={{ flexShrink: 0, marginTop: '1px' }} />
               <p style={{ fontSize: '0.74rem', color: '#c4b5fd', margin: 0, lineHeight: 1.4 }}>
-                Your account will come pre-loaded with <strong>KVB A/c 1516</strong>, GPay, Supermoney, and Cash accounts ready for SMS sync.
+                Your account comes ready with Bank Account, Google Pay, and Cash Wallet — supporting all Indian banks and UPI SMS sync.
               </p>
             </div>
           )}
         </div>
 
         <p style={{ textAlign: 'center', fontSize: '0.72rem', color: '#475569', marginTop: '16px' }}>
-          Your data is stored privately on your local server.
+          Your data is stored securely in MongoDB Atlas Cloud.
         </p>
       </div>
     </div>
