@@ -43,7 +43,7 @@ export default function Header({ profiles = [], selectedProfile, onProfileChange
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
         {/* Install Mobile App Button (if not already running inside standalone app) */}
         {!isStandalone && (
           <button
@@ -53,17 +53,18 @@ export default function Header({ profiles = [], selectedProfile, onProfileChange
               background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(56, 189, 248, 0.15))',
               border: '1px solid rgba(16, 185, 129, 0.35)',
               color: '#34d399',
-              padding: '6px 8px',
-              borderRadius: '10px',
+              padding: '6px 7px',
+              borderRadius: '9px',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              fontSize: '0.7rem',
-              fontWeight: 700
+              gap: '3px',
+              fontSize: '0.68rem',
+              fontWeight: 700,
+              whiteSpace: 'nowrap'
             }}
           >
-            <Download size={13} />
+            <Download size={12} />
             <span>App</span>
           </button>
         )}
@@ -73,7 +74,17 @@ export default function Header({ profiles = [], selectedProfile, onProfileChange
           className="profile-pill-trigger"
           value={selectedProfile}
           onChange={(e) => onProfileChange(e.target.value)}
-          style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.15)', maxWidth: '120px' }}
+          style={{ 
+            background: 'rgba(255,255,255,0.08)', 
+            color: '#fff', 
+            border: '1px solid rgba(255,255,255,0.15)', 
+            maxWidth: '100px',
+            fontSize: '0.74rem',
+            padding: '5px 8px',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap'
+          }}
         >
           <option value="" style={{ background: '#0e1322' }}>👤 {userName || 'All'}</option>
           {profiles.map(p => (
@@ -89,11 +100,11 @@ export default function Header({ profiles = [], selectedProfile, onProfileChange
           title="Logout"
           style={{
             background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.25)',
-            color: '#f87171', padding: '6px 8px', borderRadius: '10px', cursor: 'pointer',
+            color: '#f87171', padding: '5px 7px', borderRadius: '9px', cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center'
           }}
         >
-          <LogOut size={15} />
+          <LogOut size={14} />
         </button>
       </div>
     </header>

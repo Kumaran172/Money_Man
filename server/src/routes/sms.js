@@ -54,7 +54,7 @@ router.post('/webhook', async (req, res, next) => {
       return res.status(422).json({ success: false, error: parseResult.error, raw_sms: rawText });
     }
 
-    const { type, amount, category, note, date, available_balance } = parseResult.data;
+    const { type, amount, category, note, date, available_balance, bank_name, account_digits, account_name, bank_color } = parseResult.data;
 
     // Duplicate check
     const exists = await Transaction.findOne({
@@ -68,12 +68,25 @@ router.post('/webhook', async (req, res, next) => {
       return res.json({ success: true, message: 'Duplicate transaction skipped.', duplicate: true });
     }
 
-    // Find user's KVB account, or fallback to first account
-    let account = await Account.findOne({ user_id: user._id, type: 'bank' }) ||
-                  await Account.findOne({ user_id: user._id, name: { $regex: 'KVB', $options: 'i' } }) ||
-                  await Account.findOne({ user_id: user._id });
-
-    if (!account) return res.status(400).json({ success: false, error: 'No account found for user.' });
+    // Smart Account Finder: Find user's matching account by account digits OR bank name
+    let account = null;
+    if (account_digits) {
+      account = await Account.findOne({ user_id: user._id, name: { $regex: account_digits, $options: 'i' } });
+    }
+    if (!account && bank_name && !/bank account/i.test(bank_name)) {
+      account = await Account.findOne({ user_id: user._id, name: { $regex: bank_name.split(' ')[0], $options: 'i' } });
+    }
+    if (!account) {
+      // Auto-create payment account for this bank & last 4 digits
+      account = await Account.create({
+        user_id: user._id,
+        name: account_name,
+        type: 'bank',
+        balance: available_balance !== null && available_balance !== undefined ? available_balance : 0,
+        color: bank_color || '#3b82f6'
+      });
+      console.log(`✨ Auto-created new payment account: ${account_name} for user ${user.name}`);
+    }
 
     await Transaction.create({
       user_id: user._id,
@@ -96,8 +109,8 @@ router.post('/webhook', async (req, res, next) => {
       await account.save();
     }
 
-    console.log(`✅ MongoDB SMS Auto-sync: ${type.toUpperCase()} ₹${amount} on ${date} (${category})`);
-    res.status(201).json({ success: true, message: `Auto-recorded ₹${amount} ${type} from ${sender}!` });
+    console.log(`✅ MongoDB SMS Auto-sync: ${type.toUpperCase()} ₹${amount} on ${date} (${category}) -> ${account.name}`);
+    res.status(201).json({ success: true, message: `Auto-recorded ₹${amount} ${type} into ${account.name}!` });
   } catch (err) {
     next(err);
   }
@@ -119,20 +132,12 @@ router.post('/bulk', async (req, res, next) => {
 
     let inserted = 0;
     let duplicates = 0;
-    const errors = [];
-
-    // Find user's KVB account or first account
-    const defaultAccount = await Account.findOne({ user_id: user._id, type: 'bank' }) ||
-                           await Account.findOne({ user_id: user._id, name: { $regex: 'KVB', $options: 'i' } }) ||
-                           await Account.findOne({ user_id: user._id });
-
-    if (!defaultAccount) return res.status(400).json({ success: false, error: 'No account found for user.' });
 
     // Sort chronologically ascending so balances apply accurately
     const items = [...bulkResult.parsed].sort((a, b) => a.date.localeCompare(b.date));
 
     for (const item of items) {
-      const { type, amount, category, note, date, available_balance } = item;
+      const { type, amount, category, note, date, available_balance, bank_name, account_digits, account_name, bank_color } = item;
 
       // Duplicate check
       const exists = await Transaction.findOne({
@@ -147,10 +152,29 @@ router.post('/bulk', async (req, res, next) => {
         continue;
       }
 
+      // Smart Account Finder per item
+      let account = null;
+      if (account_digits) {
+        account = await Account.findOne({ user_id: user._id, name: { $regex: account_digits, $options: 'i' } });
+      }
+      if (!account && bank_name && !/bank account/i.test(bank_name)) {
+        account = await Account.findOne({ user_id: user._id, name: { $regex: bank_name.split(' ')[0], $options: 'i' } });
+      }
+      if (!account) {
+        account = await Account.create({
+          user_id: user._id,
+          name: account_name,
+          type: 'bank',
+          balance: available_balance !== null && available_balance !== undefined ? available_balance : 0,
+          color: bank_color || '#3b82f6'
+        });
+        console.log(`✨ Auto-created new payment account: ${account_name}`);
+      }
+
       await Transaction.create({
         user_id: user._id,
         profile_id: profile?._id,
-        account_id: defaultAccount._id,
+        account_id: account._id,
         type,
         amount,
         category,
@@ -162,12 +186,12 @@ router.post('/bulk', async (req, res, next) => {
       inserted++;
 
       if (available_balance !== null && available_balance !== undefined) {
-        defaultAccount.balance = available_balance;
-        await defaultAccount.save();
+        account.balance = available_balance;
+        await account.save();
       } else {
         const delta = type === 'credit' ? amount : -amount;
-        defaultAccount.balance += delta;
-        await defaultAccount.save();
+        account.balance += delta;
+        await account.save();
       }
     }
 

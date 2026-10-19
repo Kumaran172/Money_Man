@@ -212,7 +212,7 @@ export default function App() {
                   <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>📭</div>
                   <div style={{ fontWeight: 700, color: '#e2e8f0', marginBottom: '6px' }}>No transactions yet</div>
                   <div style={{ fontSize: '0.76rem', color: '#64748b', lineHeight: 1.5 }}>
-                    Go to the <strong style={{ color: '#10b981' }}>SMS Sync tab</strong> to import your<br />KVB bank history, or tap <strong>+</strong> to add manually.
+                    Go to the <strong style={{ color: '#10b981' }}>SMS Sync tab</strong> to import your<br />Axis, HDFC, SBI or KVB messages, or tap <strong>+</strong> to add manually.
                   </div>
                 </div>
               ) : (
