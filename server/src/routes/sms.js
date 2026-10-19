@@ -132,6 +132,7 @@ router.post('/bulk', async (req, res, next) => {
 
     let inserted = 0;
     let duplicates = 0;
+    const errors = [];
 
     // Sort chronologically ascending so balances apply accurately
     const items = [...bulkResult.parsed].sort((a, b) => a.date.localeCompare(b.date));
